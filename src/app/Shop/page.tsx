@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AiOutlineHeart, AiOutlineShoppingCart, AiOutlineEye } from "react-icons/ai";
+import {
+  AiOutlineHeart,
+  AiOutlineShoppingCart,
+  AiOutlineEye,
+} from "react-icons/ai";
 
 const shoplist = [
   {
@@ -43,15 +47,55 @@ const shoplist = [
     rating: 5,
     colors: ["bg-yellow-500", "bg-purple-500", "bg-gray-500"],
   },
+  {
+    id: 5,
+    name: "Product 5",
+    image: "/contant1.png",
+    price: "$120.00",
+    oldPrice: "$150.00",
+    description: "This is a brief description of Product 1.",
+    rating: 4,
+    colors: ["bg-red-500", "bg-blue-500", "bg-green-500"],
+  },
+  {
+    id: 6,
+    name: "Product 6",
+    image: "/contant2.png",
+    price: "$99.00",
+    oldPrice: "$130.00",
+    description: "This is a brief description of Product 2.",
+    rating: 5,
+    colors: ["bg-yellow-500", "bg-purple-500", "bg-gray-500"],
+  },
+  {
+    id: 7,
+    name: "Product 7",
+    image: "/contant3.png",
+    price: "$99.00",
+    oldPrice: "$130.00",
+    description: "This is a brief description of Product 2.",
+    rating: 5,
+    colors: ["bg-yellow-500", "bg-purple-500", "bg-gray-500"],
+  },
+  {
+    id: 8,
+    name: "Product 8",
+    image: "/contant4.png",
+    price: "$99.00",
+    oldPrice: "$130.00",
+    description: "This is a brief description of Product 2.",
+    rating: 5,
+    colors: ["bg-yellow-500", "bg-purple-500", "bg-gray-500"],
+  },
 ];
 
 const ShopList = () => {
   return (
     <div className="font-sans text-[#151875]">
       {/* Header Section */}
-      <div className="py-16 px-8 bg-gray-100">
-        <h1 className="text-4xl font-bold">Shop List</h1>
-        <div className="flex items-center gap-2">
+      <div className="py-16 px-4 sm:px-8 bg-gray-100">
+        <h1 className="text-3xl sm:text-4xl font-bold">Shop List</h1>
+        <div className="flex flex-wrap items-center gap-2">
           <Link href={"/"}>Home</Link>
           <p>Pages</p>
           <p className="text-[#FB2E86]">Shopping List</p>
@@ -59,9 +103,9 @@ const ShopList = () => {
       </div>
 
       {/* Filter and Sorting Section */}
-      <div className="py-4 flex flex-col lg:flex-row justify-between px-8">
+      <div className="py-4 flex flex-col lg:flex-row justify-between px-4 sm:px-8">
         <div>
-          <h1 className="text-2xl font-semibold font-[Josefin Sans] mb-2">
+          <h1 className="text-xl sm:text-2xl font-semibold font-[Josefin Sans] mb-2">
             Ecommerce Accessories & Fashion Items
           </h1>
           <p className="text-sm text-gray-500 mb-4">
@@ -70,7 +114,7 @@ const ShopList = () => {
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Per Page */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <label
               htmlFor="perPage"
               className="text-sm font-medium text-gray-700"
@@ -80,12 +124,12 @@ const ShopList = () => {
             <input
               type="text"
               id="perPage"
-              className="w-16 p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full sm:w-16 p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           {/* Sort By */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <label
               htmlFor="sortBy"
               className="text-sm font-medium text-gray-700"
@@ -94,7 +138,7 @@ const ShopList = () => {
             </label>
             <select
               id="sortBy"
-              className="p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full sm:w-auto p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="bestMatch">Best Match</option>
               <option value="priceLowHigh">Price: Low to High</option>
@@ -103,29 +147,29 @@ const ShopList = () => {
           </div>
 
           {/* View */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <label htmlFor="view" className="text-sm font-medium text-gray-700">
               View:
             </label>
             <input
               type="text"
               id="view"
-              className="w-16 p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full sm:w-16 p-1 border rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
         </div>
       </div>
 
       {/* Product List */}
-      <div className="px-32">
+      <div className="px-4 sm:px-8 lg:px-32">
         <div className="space-y-6">
           {shoplist.map((product) => (
             <div
               key={product.id}
-              className="flex flex-col lg:flex-row bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+              className="flex flex-col sm:flex-row bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Product Image */}
-              <div className="lg:w-[300px] flex-shrink-0">
+              <div className="sm:w-[300px] w-full flex-shrink-0">
                 <Image
                   src={product.image}
                   alt={product.name}
@@ -137,8 +181,10 @@ const ShopList = () => {
 
               {/* Product Details */}
               <div className="lg:w-2/3 lg:ml-6 mt-4 lg:mt-0">
-                <div className="w-full flex justify-between items-center">
-                  <h3 className="text-xl font-semibold">{product.name}</h3>
+                <div className="w-full flex items-center gap-5">
+                  <h3 className="text-lg sm:text-xl font-semibold">
+                    {product.name}
+                  </h3>
                   {/* Color Options */}
                   <div className="mt-2 flex gap-1">
                     {product.colors.map((color, index) => (
@@ -157,7 +203,9 @@ const ShopList = () => {
                     {product.oldPrice}
                   </span>
                 </div>
-                <p className="mt-2 text-gray-600 w-96">{product.description}</p>
+                <p className="mt-2 text-gray-600 w-full lg:w-96">
+                  {product.description}
+                </p>
 
                 {/* Rating */}
                 <div className="mt-2 flex items-center">
@@ -179,7 +227,7 @@ const ShopList = () => {
                   <button className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
                     <AiOutlineHeart size={24} />
                   </button>
-                  <Link href="/cart">
+                  <Link href="/Cart">
                     <button className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
                       <AiOutlineShoppingCart size={24} />
                     </button>

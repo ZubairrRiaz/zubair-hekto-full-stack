@@ -6,6 +6,15 @@ const AboutPage = () => {
     <div className="px-6 lg:px-20 py-10 font-sans text-[#151875]">
       <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
         <div>
+          <Image
+            src="/f3.png"
+            alt="Ecommerce Meeting"
+            width={500}
+            height={500}
+            className="rounded-lg shadow-md"
+          />
+        </div>
+        <div>
           <h2 className="text-4xl font-bold mb-6">
             Know About Our Ecommerce Business, History
           </h2>
@@ -20,24 +29,17 @@ const AboutPage = () => {
             </button>
           </Link>
         </div>
-        <div>
-          <Image
-            src="/images/about.png"
-            alt="Ecommerce Meeting"
-            width={500}
-            height={500}
-            className="rounded-lg shadow-md"
-          />
-        </div>
+
       </section>
+
       <section className="my-16 text-center">
         <h2 className="text-3xl font-bold mb-8">Our Features</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { icon: "/images/icon1.png", title: "Free Delivery" },
-            { icon: "/images/icon2.png", title: "100% Cash Back" },
-            { icon: "/images/icon3.png", title: "Quality Product" },
-            { icon: "/images/icon4.png", title: "24/7 Support" },
+            { icon: "/f4.png", title: "Free Delivery" },
+            { icon: "/f5.png", title: "100% Cash Back" },
+            { icon: "/f6.png", title: "Quality Product" },
+            { icon: "/f7.png", title: "24/7 Support" },
           ].map((feature, index) => (
             <div
               key={index}
@@ -46,8 +48,8 @@ const AboutPage = () => {
               <Image
                 src={feature.icon}
                 alt={feature.title}
-                width={60}
-                height={60}
+                width={150}
+                height={150}
                 className="mb-4 mx-auto"
               />
               <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
@@ -63,9 +65,9 @@ const AboutPage = () => {
         <h2 className="text-3xl font-bold mb-8">Our Client Say!</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { name: "Selina Gomez", image: "/images/client1.png" },
-            { name: "John Doe", image: "/images/client2.png" },
-            { name: "Emma Watson", image: "/images/client3.png" },
+            { name: "Selina Gomez", image: "/f8.png" },
+            { name: "John Doe", image: "/f9.png" },
+            { name: "Emma Watson", image: "/f10.png" },
           ].map((client, index) => (
             <div key={index} className="flex flex-col items-center">
               <Image

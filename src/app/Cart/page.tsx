@@ -89,10 +89,10 @@ const Cart = () => {
 
   return (
     <div className="p-6 lg:p-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-2 overflow-x-auto">
         <table className="w-full border-collapse border">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-gray-100 hidden sm:table-row">
               <th className="p-4 border text-[#1D3178] text-xs sm:text-base">
                 Product
               </th>
@@ -109,17 +109,21 @@ const Cart = () => {
           </thead>
           <tbody>
             {cartItems.map((item) => (
-              <tr key={item.id} className="text-center">
-                <td className="p-4 border flex items-center space-x-4">
+              <tr
+                key={item.id}
+                className="flex flex-col sm:table-row text-center border-b sm:border-none"
+              >
+                <td className="p-4 border flex flex-col sm:flex-row items-center space-x-4">
                   <Image
                     src={item.image}
                     alt={item.name}
                     width={500}
                     height={500}
-                    className="w-16 h-16 rounded-lg object-cover"
+                    className="w-24 h-24 sm:w-16 sm:h-16 rounded-lg object-cover"
                   />
-                  <div>
-                    <p className="font-semibold text-[#1D3178] text-xs sm:text-base">
+
+                  <div className="flex-1">
+                    <p className="font-semibold text-[#1D3178] text-xl sm:text-base">
                       {item.name}
                     </p>
                     <p className="text-gray-500 text-xs sm:text-sm">
@@ -127,7 +131,7 @@ const Cart = () => {
                     </p>
                   </div>
                 </td>
-                <td className="p-4 border text-[#1D3178] text-xs sm:text-base">
+                <td className="p-4 border text-[#1D3178] text-xl sm:text-base">
                   ${item.price.toFixed(2)}
                 </td>
                 <td className="p-4 border">
@@ -148,7 +152,7 @@ const Cart = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-between mt-4">
+        <div className="flex flex-col sm:flex-row justify-between mt-4 space-y-2 sm:space-y-0">
           <button className="px-4 py-2 bg-[#FB2E86] text-white rounded-sm text-xs sm:text-sm">
             Update Cart
           </button>
@@ -159,7 +163,7 @@ const Cart = () => {
       </div>
       <div className="p-6 bg-gray-50 rounded-md shadow-md flex flex-col justify-between">
         <div>
-          <h2 className=" font-bold mb-4 text-[#1D3178] text-xs sm:text-xl">
+          <h2 className="font-bold mb-4 text-[#1D3178] text-xs sm:text-xl">
             Cart Totals
           </h2>
           <p className="flex justify-between mb-2 text-[#1D3178] text-xs sm:text-sm">
@@ -173,7 +177,9 @@ const Cart = () => {
             Proceed To Checkout
           </button>
         </div>
-        <h1 className="text-2xl font-bold text-center bg-white p-8 text-[#1D3178]">Calculate Shipping</h1>
+        <h1 className="text-2xl font-bold text-center bg-white p-8 text-[#1D3178]">
+          Calculate Shipping
+        </h1>
         <div className="p-6 bg-gray-50 rounded-sm shadow-md">
           <h2 className="font-bold mb-4 text-[#1D3178] text-xs sm:text-xl">
             Calculate Shipping

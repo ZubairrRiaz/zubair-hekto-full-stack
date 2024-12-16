@@ -83,7 +83,7 @@ const Footer = () => {
         <div className="bg-[#E7E4F8]  ">
     <div className="container px-5 w-[60%]  h-[80px] sm:h-[53px] mx-auto flex items-center sm:flex-row flex-col">
       
-    <p className="text-sm text-[#9DA0AE] sm:ml-6 sm:mt-0 mt-4">
+    <p className="text-sm text-center text-[#9DA0AE] sm:ml-6 sm:mt-0 mt-4">
         © Webecy
         <a
           href="https://twitter.com/knyttnev"
@@ -94,7 +94,7 @@ const Footer = () => {
           All Right Reserved
         </a>
       </p>
-      <span className="flex flex-row sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+      <span className="flex flex-row sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
 
      <div className="w-5 h-5 " ><a href="#"><FaFacebook  /></a></div> 
       <div className="w-5 h-5  ml-3 text-gray-900"><a href="#"><RxInstagramLogo /></a></div>

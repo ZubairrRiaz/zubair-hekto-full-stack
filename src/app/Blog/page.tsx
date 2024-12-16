@@ -48,7 +48,7 @@ const Blog = () => {
   return (
     <div>
       <div className="py-16 space-y-2 bg-gray-100">
-        <h1 className="text-4xl font-bold text-[#001F54] ml-8 lg:ml-36">Blog</h1>{" "}
+        <h1 className="text-4xl font-bold text-[#151875] ml-8 lg:ml-36">Blog</h1>{" "}
         <div className="flex items-center ml-8 lg:ml-36 gap-2">
           <Link href={"/"}>Home</Link>
           <span className="text-black mx-2">.</span>

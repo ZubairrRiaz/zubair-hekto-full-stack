@@ -32,7 +32,7 @@ function Login() {
       {/* Left Section (Image) */}
       <div className="w-full sm:w-1/2 flex justify-center items-center p-4">
         <Image
-          src="/images/cart.png"
+          src="/f1.png"
           alt="Cart"
           width={800} // Increased size for desktop
           height={800} // Increased size for desktop

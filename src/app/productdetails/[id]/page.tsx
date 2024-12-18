@@ -1,5 +1,4 @@
 import React from "react";
-import { chairsArray } from "@/app/Product/page";
 import Image from "next/image";
 import { IoStarSharp } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
@@ -7,6 +6,121 @@ import { FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaArrowRightLong } from "react-icons/fa6";
+
+const chairsArray = [
+  {
+    id: 1,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p1.png",
+  },
+  {
+    id: 2,
+    name: "Elbaot Chair",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p2.png",
+  },
+  {
+    id: 3,
+    name: "Notoe Fex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p3.png",
+  },
+  {
+    id: 4,
+    name: "Cartel Pixel",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p4.png",
+  },
+  {
+    id: 5,
+    name: "Iron Wood chair",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p5.png",
+  },
+  {
+    id: 6,
+    name: "Crystal Clear Chair",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p6.png",
+  },
+  {
+    id: 7,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p7.png",
+  },
+  {
+    id: 8,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p8.png",
+  },
+  {
+    id: 9,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p9.png",
+  },
+  {
+    id: 10,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p10.png",
+  },
+  {
+    id: 11,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p11.png",
+  },
+  {
+    id: 12,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p12.png",
+  },
+  {
+    id: 13,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p13.png",
+  },
+  {
+    id: 14,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p14.png",
+  },
+  {
+    id: 15,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p15.png",
+  },
+  {
+    id: 16,
+    name: "Wella laage mex",
+    discountPrice: "$26.00", // Corrected typo
+    originalPrice: "$42.00", // Corrected typo
+    image: "/p16.png",
+  },
+];
 
 const ProductDetails = (props: { params: { id: string } }) => {
   // Convert the id from string to number

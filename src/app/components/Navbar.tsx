@@ -15,7 +15,7 @@ const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="font-[family-name:var(--font-geist-sans)]">
+    <div className="font-[family-name:var(--font-geist-sans)] bg-white">
       <div className="bg-[#7E33E0] h-[54px] flex justify-center items-center text-[#F1F1F1] font-sans">
         <div className="w-full md:w-[65%] flex flex-col md:flex-row justify-between text-[16px] px-4 md:px-0">
           <div className="flex sm:flex-col justify-between md:flex-row font-[family-name:var(--font-geist-sans)]">
@@ -103,11 +103,12 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Sidebar */}
-      <div className="md:hidden">
+      <div className="md:hidden bg-white">
         {/* <button className="absolute top-0" onClick={() => setSidebarOpen(!sidebarOpen)}>
           {sidebarOpen ? <IoMdClose size={30} /> : <CiMenuBurger size={30} />}
         </button> */}
         <div
+        onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-transform duration-300 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
@@ -123,11 +124,7 @@ const Navbar = () => {
                 <CiMenuBurger size={30} />
               )}
             </button>
-            <ul className="text-[18px] flex flex-col gap-4 p-4 font-[family-name:var(--font-geist-sans)]">
-
-            
-
-
+            <ul className="bg-white text-[18px] flex flex-col gap-4 p-4 font-[family-name:var(--font-geist-sans)]">
               <li onClick={() => setSidebarOpen(!sidebarOpen)} className="hover:text-white hover:bg-black rounded-lg p-2">
                 <Link href={"/"}>Home</Link>
               </li>

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const AboutPage = () => {
   return (
-    <div className="px-6 lg:px-20 py-10 font-sans text-[#151875]">
+    <div className="px-6 lg:px-20 py-10 font-sans text-[#151875] bg-white">
       <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
         <div>
           <Image

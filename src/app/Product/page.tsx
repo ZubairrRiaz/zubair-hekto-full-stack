@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export interface Productinfo {
+interface Productinfo {
   id: number;
   name: string;
   discountPrice: string; // Corrected typo
@@ -10,7 +10,7 @@ export interface Productinfo {
   image: string;
 }
 
-export const chairsArray: Productinfo[] = [
+const chairsArray = [
   {
     id: 1,
     name: "Wella laage mex",

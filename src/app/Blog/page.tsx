@@ -55,7 +55,7 @@ const Blog = () => {
           <span className="text-[#FB2E86]">Latest Blogs</span>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row lg:justify-center px-6 lg:px-20 py-10">
+      <div className="flex flex-col lg:flex-row lg:justify-center px-6 lg:px-20 py-10 bg-white">
         <div className="lg:w-1/2">
           {blogs.map((blog) => (
             <div key={blog.id} className="mb-10">

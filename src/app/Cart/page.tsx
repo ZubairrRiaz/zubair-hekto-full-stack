@@ -1,211 +1,76 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
+'use client'
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { deltItem } from '../store/features/cart';
+import { toast } from 'sonner';
 
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  color: string;
-  size: string;
-  image: string;
-};
 
-const cartproducts: CartItem[] = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 30,
-    quantity: 2,
-    color: "Red",
-    size: "M",
-    image: "/c1.png",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 45,
-    quantity: 1,
-    color: "Blue",
-    size: "L",
-    image: "/c2.png",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 45,
-    quantity: 1,
-    color: "Blue",
-    size: "L",
-    image: "/c2.png",
-  },
-  {
-    id: 3,
-    name: "Product 2",
-    price: 45,
-    quantity: 1,
-    color: "Blue",
-    size: "L",
-    image: "/c3.png",
-  },
-  {
-    id: 4,
-    name: "Product 2",
-    price: 45,
-    quantity: 1,
-    color: "Blue",
-    size: "L",
-    image: "/c4.png",
-  },
-  {
-    id: 5,
-    name: "Product 2",
-    price: 45,
-    quantity: 1,
-    color: "Blue",
-    size: "L",
-    image: "/c5.png",
-  },
-];
+const CartPage = () => {
+    const cart = useAppSelector(state => state.cart)
+    const dispatch = useAppDispatch()
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(cartproducts);
+    const [cartItems, setCartItems] = useState(cart);
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+    useEffect(() => {
+        setCartItems(cart);
+    }, [cart]);
 
-  const calculateTotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
+    const handleDelete = (id: number) => {
+        dispatch(deltItem(id));
+        toast(`Product Removed!`)
+       
+    };
 
-  return (
-    <div className="p-6 lg:p-12 grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white">
-      <div className="lg:col-span-2 overflow-x-auto">
-        <table className="w-full border-collapse border">
-          <thead>
-            <tr className="bg-gray-100 hidden sm:table-row">
-              <th className="p-4 border text-[#1D3178] text-xs sm:text-base">
-                Product
-              </th>
-              <th className="p-4 border text-[#1D3178] text-xs sm:text-base">
-                Price
-              </th>
-              <th className="p-4 border text-[#1D3178] text-xs sm:text-base">
-                Quantity
-              </th>
-              <th className="p-4 border text-[#1D3178] text-xs sm:text-base">
-                Total
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((item) => (
-              <tr
-                key={item.id}
-                className="flex flex-col sm:table-row text-center border-b sm:border-none"
-              >
-                <td className="p-4 border flex flex-col sm:flex-row items-center space-x-4">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={500}
-                    height={500}
-                    className="w-24 h-24 sm:w-16 sm:h-16 rounded-lg object-cover"
-                  />
+    const calculateSummary = () => {
+        const totalProducts = cartItems.length;
+        const totalPrice = cartItems.reduce((acc, item) => acc + (item.price), 0);
+        const tax = totalPrice * 0.1; // Assuming a 10% tax rate
+        return { totalProducts, totalPrice, tax };
+    };
 
-                  <div className="flex-1">
-                    <p className="font-semibold text-[#1D3178] text-xl sm:text-base">
-                      {item.name}
-                    </p>
-                    <p className="text-gray-500 text-xs sm:text-sm">
-                      Color: {item.color}, Size: {item.size}
-                    </p>
-                  </div>
-                </td>
-                <td className="p-4 border text-[#1D3178] text-xl sm:text-base">
-                  ${item.price.toFixed(2)}
-                </td>
-                <td className="p-4 border">
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateQuantity(item.id, Number(e.target.value))
-                    }
-                    className="w-16 px-2 py-1 border rounded-md text-xs sm:text-sm"
-                    min="1"
-                  />
-                </td>
-                <td className="p-4 border text-[#1D3178] text-xs sm:text-base">
-                  ${(item.price * item.quantity).toFixed(2)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex flex-col sm:flex-row justify-between mt-4 space-y-2 sm:space-y-0">
-          <button className="px-4 py-2 bg-[#FB2E86] text-white rounded-sm text-xs sm:text-sm">
-            Update Cart
-          </button>
-          <button className="px-4 py-2 bg-[#FB2E86] text-white rounded-sm text-xs sm:text-sm">
-            Clear Cart
-          </button>
-        </div>
-      </div>
-      <div className="p-6 bg-gray-50 rounded-md shadow-md flex flex-col justify-between">
-        <div>
-          <h2 className="font-bold mb-4 text-[#1D3178] text-xs sm:text-xl">
-            Cart Totals
-          </h2>
-          <p className="flex justify-between mb-2 text-[#1D3178] text-xs sm:text-sm">
-            <span>Subtotal:</span> <span>${calculateTotal().toFixed(2)}</span>
-          </p>
-          <p className="flex justify-between mb-4 text-[#1D3178] text-xs sm:text-sm">
-            <span>Totals:</span>{" "}
-            <span>${(calculateTotal() + 15).toFixed(2)}</span>
-          </p>
-          <button className="w-full py-2 bg-[#19D16F] text-white rounded-sm text-xs sm:text-sm">
-            Proceed To Checkout
-          </button>
-        </div>
-        <h1 className="text-2xl font-bold text-center bg-white p-8 text-[#1D3178]">
-          Calculate Shipping
-        </h1>
-        <div className="p-6 bg-gray-50 rounded-sm shadow-md">
-          <h2 className="font-bold mb-4 text-[#1D3178] text-xs sm:text-xl">
-            Calculate Shipping
-          </h2>
-          <input
-            type="text"
-            placeholder="Bangladesh"
-            className="w-full mb-3 px-3 py-2 border rounded-md text-xs sm:text-sm"
-          />
-          <input
-            type="text"
-            placeholder="Mirpur, Dhaka - 1200"
-            className="w-full mb-3 px-3 py-2 border rounded-md text-xs sm:text-sm"
-          />
-          <input
-            type="text"
-            placeholder="Postal Code"
-            className="w-full mb-4 px-3 py-2 border rounded-md text-xs sm:text-sm"
-          />
-          <button className="w-full py-2 bg-[#FB2E86] text-white rounded-sm text-xs sm:text-sm">
-            Calculate Shipping
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+    const checkProduct = cartItems.find(cart => cart)
+    if (!checkProduct) {
+        return <>
+            <h1 className="text-3xl font-bold mb-6 text-[#4a4e69] text-center py-7 sm:py-12 shadow-md bg-[#f0f4f8]">Shopping Cart</h1>
+            <div className='text-xl font-bold text-center h-[400px] content-center'>Shopping Cart is Empty!</div>
+        </>
+    } else {
+        const { totalProducts, totalPrice, tax } = calculateSummary();
+        return (
+            <div className="font-[family-name:var(--font-geist-sans)] min-h-screen bg-[#f0f4f8] flex flex-col items-center py-10">
+                <h1 className="text-3xl font-bold mb-6 text-[#4a4e69]">Shopping Cart</h1>
+                <div className="sm:w-[70%] bg-white shadow-md rounded-lg p-6">
+                    {cartItems.map(item => (
+                        <div key={item.id} className="flex flex-col md:flex-row justify-between items-center border-b py-4">
+                            <Image src={item.image} alt={item.name} height={200} width={200} className="sm:w-48 sm:h-56 object-cover rounded-md mb-4 md:mb-0" />
+                            <div className="flex-1 md:ml-4">
+                                <h2 className="text-xl font-semibold text-[#4a4e69]">{item.name}</h2>
+                                <p className="text-gray-600">{item.name}</p>
+                                <p className="text-gray-500">PKR: {item.price}</p>
+                            </div>
+                            <button
+                                onClick={() => handleDelete(item.id)}
+                                className="text-red-500 mt-3 font-bold hover:text-red-700 transition duration-300"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+                    <div className="mt-6 p-6 bg-[#7E33E0] text-white shadow-inner space-y-2">
+                        <h2 className="text-2xl font-bold text-white mb-4">Order Summary</h2>
+                        <p className="text-lg">Total Products: {totalProducts}</p>
+                        <p className="text-lg">Total Price: PKR {totalPrice.toFixed(2)}</p>
+                        <p className="text-lg">Tax: PKR {tax.toFixed(2)}</p>
+                        <p className="text-lg font-bold mt-2">Grand Total: PKR {(totalPrice + tax).toFixed(2)}</p>
+                    </div>
+                    <button className="w-full mt-6 bg-[#7E33E0] text-white py-3 rounded-lg font-semibold hover:bg-[#88b0c0] transition duration-300">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        );
+    }
+}
 
-export default Cart;
+export default CartPage;

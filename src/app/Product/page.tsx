@@ -1,131 +1,44 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { IoStarSharp } from "react-icons/io5";
+import { urlFor } from "../../sanity/lib/image";
+import { client } from "../../sanity/lib/client";
 
-interface Productinfo {
+export interface Productinfo {
   id: number;
   name: string;
-  discountPrice: string; // Corrected typo
-  originalPrice: string; // Corrected typo
-  image: string;
+  description: string; // Corrected typo
+  category: string; // Corrected typo
+  discountPercentage: number;
+  stockLevel: number;
+  price: number;
+  imageUrl: string;
 }
 
-const chairsArray = [
-  {
-    id: 1,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p1.png",
-  },
-  {
-    id: 2,
-    name: "Elbaot Chair",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p2.png",
-  },
-  {
-    id: 3,
-    name: "Notoe Fex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p3.png",
-  },
-  {
-    id: 4,
-    name: "Cartel Pixel",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p4.png",
-  },
-  {
-    id: 5,
-    name: "Iron Wood chair",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p5.png",
-  },
-  {
-    id: 6,
-    name: "Crystal Clear Chair",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p6.png",
-  },
-  {
-    id: 7,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p7.png",
-  },
-  {
-    id: 8,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p8.png",
-  },
-  {
-    id: 9,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p9.png",
-  },
-  {
-    id: 10,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p10.png",
-  },
-  {
-    id: 11,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p11.png",
-  },
-  {
-    id: 12,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p12.png",
-  },
-  {
-    id: 13,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p13.png",
-  },
-  {
-    id: 14,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p14.png",
-  },
-  {
-    id: 15,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p15.png",
-  },
-  {
-    id: 16,
-    name: "Wella laage mex",
-    discountPrice: "$26.00", // Corrected typo
-    originalPrice: "$42.00", // Corrected typo
-    image: "/p16.png",
-  },
-];
+async function sanityDataProducts() {
+  try {
+    const dataFetch = await client.fetch(`*[_type == "product"]{
+      id,
+      name,
+      description,
+      category,
+      discountPercentage,
+      stockLevel,
+      price,
+      "imageUrl":image.asset->url
+    }`);
+    return dataFetch;
+  } catch (error) {
+    console.error("Error fetching data from Sanity:", error);
+    return null; // or handle the error as needed
+  }
+}
 
-const Page = () => {
+
+const Page = async () => {
+  const data = await sanityDataProducts();
+
   return (
     <div>
       <div className="sm:h-[250px] h-[150px] items-center w-full bg-gray-100 flex sm:justify-start justify-center">
@@ -175,32 +88,62 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="flex justify-center py-10">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-5xl">
-          {chairsArray.map((product: Productinfo) => (
-            <div
-              key={product.id} // Use product.id as key instead of index
-              className="text-[#151875] h-[320px] w-full box-border hover:border hover:border-blue-950 text-center items-center space-y-1"
-            >
-              <Link href={`/productdetails/${product.id}`}>
-                <div className="flex justify-center items-center h-[250px]">
-                  <Image
-                    src={product.image}
-                    alt="Chair"
-                    width={300}
-                    height={300}
-                  />
+      <div className="font-[family-name:var(--font-geist-sans)] pb-44">
+        <div className="sm:py-10">
+          <h1 className="text-center font-bold text-2xl sm:text-3xl bg-[#FB2E86] sm:rounded-xl text-white py-4 shadow-xl">
+            Best Picks Of All Time
+          </h1>
+          <div
+            className="grid grid-cols-1
+         md:grid-cols-2 place-items-center gap-[8px] sm:gap-12 w-full lg:grid-cols-3 xl:grid-cols-4"
+          >
+            {data.map((product: Productinfo) => (
+              <Link href={`/productdetails/${product.id}`} key={product.id}>
+              <div
+                  className="rounded-md flex flex-col justify-between shadow-sm h-[520px] relative w-full md:h-[550px] md:w-[350px] border border-opacity-10"
+                >
+                  <div className="absolute top-3 text-sm font-mono font-normal left-3 bg-[#FB2E86] rounded-3xl py-1 px-4 text-white">
+                    Save {product.discountPercentage}%
+                  </div>
+
+                  <div className="sm:w-full h-full flex justify-center items-center">
+                    <Image
+                      src={urlFor(product.imageUrl).url()}
+                      alt="Chair"
+                      width={290}
+                      height={290}
+                    />
+                  </div>
+
+                  <div className="bg-[#7E33E0] text-white sm:w-full w-[350px] p-2 rounded-b-md">
+                    <p className="sm:text-2xl font-light text-xl">
+                      {product.name}
+                    </p>
+
+                  <div className="space-y-2 sm:text-lg sm:h-[100px]">
+                    <div>
+                      <p className="flex gap-2 text-yellow-500">
+                        <IoStarSharp />
+                        <IoStarSharp />
+                        <IoStarSharp />
+                        <IoStarSharp />
+                        <IoStarSharp />
+                      </p>
+                    </div>
+
+                    <p className="text-base sm:text-lg">
+                      <span className="text-opacity-65">
+                        Category: {product.category}
+                      </span>
+                      <br />
+                      PKR {product.price}
+                    </p>
+                      </div>
+                  </div>
                 </div>
-                <p className="text-lg font-bold">{product.name}</p>
-                <p>
-                  {product.discountPrice}{" "}
-                  <span className="line-through text-pink-600">
-                    {product.originalPrice}
-                  </span>
-                </p>
               </Link>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -208,6 +151,3 @@ const Page = () => {
 };
 
 export default Page;
-
-  
-

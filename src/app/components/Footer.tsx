@@ -1,45 +1,42 @@
-import {FaFacebook} from "react-icons/fa"
+import { FaFacebook } from "react-icons/fa";
 import { RxInstagramLogo } from "react-icons/rx";
 import { FaTwitter } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer = () => {
-    return (
-<div>
-<footer className="bg-[#EEEFFB] h-auto sm:h-[400px] md:h-[500px] py-8 text-[#8A8FB9] items-center">
-
-  <div className="container mx-auto px-16 items-center">
-
-    {/* Responsive Grid */}
-    <div className="mt-[94px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 sm:gap-8 text-center md:text-left lg:text-left">
-            <div className="mt-2 sm:mt-0">
-              
-          {/* Logo */}
-          <h1 className="text-4xl font-bold text-black">Hekto</h1>
-              <div className="mt-4  ml-6w-[350px] flex items-center gap-x-2 justify-center sm:justify-start">
-               
+  return (
+    <div>
+      <footer className="bg-[#EEEFFB] py-12 text-[#8A8FB9]">
+        <div className="container mx-auto ">
+          {/* Responsive Grid */}
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 text-center md:text-left place-items-center">
+            <div>
+              {/* Logo */}
+              <h1 className="text-4xl font-bold text-black mb-6">Hekto</h1>
+              <div className="flex items-center justify-center sm:justify-start mb-6">
                 {/* Search */}
-                <div className="w-full bg-white rounded-md items-center flex">
+                <div className="flex w- bg-white rounded-md shadow-md">
                   <input
-                    className="w-[90%] h-11 p-1 bg-white text-black outline-none opacity-75"
+                    className="flex-grow p-3 text-black outline-none"
                     type="search"
                     placeholder="Enter Email Address"
                   />
-                  <button className="text-base font-medium rounded-sm w-[50%] h-[42px] bg-[#FB2E86] text-[#F3F9FF]">
+                  <button className="px-4 py-2 bg-[#FB2E86] text-white rounded-r-md">
                     Sign Up
                   </button>
                 </div>
               </div>
 
-              <p className="mt-4 text-xs leading-4 text-center sm:text-left">
+              <p className="text-xs leading-5">
                 Contact Info: <br />
                 17 Princess Road, London, Greater London NW1 8JR, UK
               </p>
             </div>
-  
+
             {/* Categories Section */}
-            <div className="mt-1 leading-6">
-              <h3 className="text-[18px] font-bold text-black mb-7">Categories</h3>
-              <ul className="mt-2 space-x-0 md:space-y-5 md:mb-6  text-sm">
+            <div>
+              <h3 className="text-lg font-bold text-black mb-4">Categories</h3>
+              <ul className="space-y-3 text-sm">
                 <li>Laptops & Computers</li>
                 <li>Cameras & Photography</li>
                 <li>Smart Phones & Tablets</li>
@@ -47,11 +44,11 @@ const Footer = () => {
                 <li>Waterproof Headphones</li>
               </ul>
             </div>
-  
+
             {/* Customer Care Section */}
-            <div className="mt-1 leading-6">
-              <h3 className="text-[18px] font-bold text-black mb-7">Customer Care</h3>
-              <ul className="mt-2 space-y-2 text-sm">
+            <div>
+              <h3 className="text-lg font-bold text-black mb-4 md:mr-40">Customer Care</h3>
+              <ul className="space-y-3 text-sm">
                 <li>My Account</li>
                 <li>Discount</li>
                 <li>Returns</li>
@@ -59,11 +56,11 @@ const Footer = () => {
                 <li>Order Tracking</li>
               </ul>
             </div>
-  
+
             {/* Pages Section */}
-            <div className="mt-1 leading-6">
-              <h3 className="text-[18px] font-bold text-black mb-7">Pages</h3>
-              <ul className="mt-2 space-y-2 text-sm">
+            <div>
+              <h3 className="text-lg font-bold text-black mb-4 sm:ml-2">Pages</h3>
+              <ul className="space-y-3 text-sm sm:ml-2">
                 <li>Blog</li>
                 <li>Browse the Shop</li>
                 <li>Category</li>
@@ -73,40 +70,38 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-  
-         
-
         </div>
-        </footer>
-{/* bottom */}
+      </footer>
 
-        <div className="bg-[#E7E4F8]  ">
-    <div className="container px-5 w-[60%]  h-[80px] sm:h-[53px] mx-auto flex items-center sm:flex-row flex-col">
-      
-    <p className="text-sm text-center text-[#9DA0AE] sm:ml-6 sm:mt-0 mt-4">
-        © Webecy
-        <a
-          href="https://twitter.com/knyttnev"
-          rel="noopener noreferrer"
-          className="text-[#9DA0AE] ml-1"
-          target="_blank"
-        >
-          All Right Reserved
-        </a>
-      </p>
-      <span className="flex flex-row sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
-
-     <div className="w-5 h-5 " ><a href="#"><FaFacebook  /></a></div> 
-      <div className="w-5 h-5  ml-3 text-gray-900"><a href="#"><RxInstagramLogo /></a></div>
-        <div className="w-5 h-5  ml-3 text-gray-900"><a href="#"><FaTwitter /></a></div>
-
-    </span>
+      {/* Bottom */}
+      <div className="bg-blue-600 text-white py-4">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between">
+          <p className="text-sm text-center sm:text-left">
+            © Hekto
+            <Link
+              href="https://twitter.com/knyttnev"
+              rel="noopener noreferrer"
+              className="ml-1"
+              target="_blank"
+            >
+              All Right Reserved
+            </Link>
+          </p>
+          <div className="flex mt-4 sm:mt-0">
+            <a href="#" className="w-6 h-6 mx-2">
+              <FaFacebook />
+            </a>
+            <a href="#" className="w-6 h-6 mx-2">
+              <RxInstagramLogo />
+            </a>
+            <a href="#" className="w-6 h-6 mx-2">
+              <FaTwitter />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  );
+};
 
-      
-        </div>
-    );
-  };
-  
-  export default Footer;
+export default Footer;

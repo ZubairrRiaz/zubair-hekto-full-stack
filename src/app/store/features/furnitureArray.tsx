@@ -13,7 +13,8 @@ async function sanityDataProducts() {
       discountPercentage,
       stockLevel,
       price,
-      "imageUrl":image.asset->url
+      "imageUrl":image.asset->url,
+      isFeaturedProduct
     }`);
     return dataFetch;
   } catch (error) {

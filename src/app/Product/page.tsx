@@ -14,6 +14,7 @@ export interface Productinfo {
   stockLevel: number;
   price: number;
   imageUrl: string;
+  isFeaturedProduct: boolean;
 }
 
 async function sanityDataProducts() {
@@ -26,15 +27,14 @@ async function sanityDataProducts() {
       discountPercentage,
       stockLevel,
       price,
-      "imageUrl":image.asset->url
+      "imageUrl":image.asset->url,
+      isFeaturedProduct
     }`);
     return dataFetch;
   } catch (error) {
     console.error("Error fetching data from Sanity:", error);
-    return null; // or handle the error as needed
   }
 }
-
 
 const Page = async () => {
   const data = await sanityDataProducts();
@@ -94,14 +94,10 @@ const Page = async () => {
             Best Picks Of All Time
           </h1>
           <div
-            className="grid grid-cols-1
-         md:grid-cols-2 place-items-center gap-[8px] sm:gap-12 w-full lg:grid-cols-3 xl:grid-cols-4"
-          >
+            className="grid grid-cols-1 md:grid-cols-2 place-items-center gap-[8px] sm:gap-12 w-full lg:grid-cols-3 xl:grid-cols-4">
             {data.map((product: Productinfo) => (
               <Link href={`/productdetails/${product.id}`} key={product.id}>
-              <div
-                  className="rounded-md flex flex-col justify-between shadow-sm h-[520px] relative w-full md:h-[550px] md:w-[350px] border border-opacity-10"
-                >
+                <div className="rounded-md flex flex-col justify-between shadow-sm h-[520px] relative w-full md:h-[550px] md:w-[350px] border border-opacity-10">
                   <div className="absolute top-3 text-sm font-mono font-normal left-3 bg-[#FB2E86] rounded-3xl py-1 px-4 text-white">
                     Save {product.discountPercentage}%
                   </div>
@@ -120,25 +116,25 @@ const Page = async () => {
                       {product.name}
                     </p>
 
-                  <div className="space-y-2 sm:text-lg sm:h-[100px]">
-                    <div>
-                      <p className="flex gap-2 text-yellow-500">
-                        <IoStarSharp />
-                        <IoStarSharp />
-                        <IoStarSharp />
-                        <IoStarSharp />
-                        <IoStarSharp />
+                    <div className="space-y-2 sm:text-lg sm:h-[100px]">
+                      <div>
+                        <p className="flex gap-2 text-yellow-500">
+                          <IoStarSharp />
+                          <IoStarSharp />
+                          <IoStarSharp />
+                          <IoStarSharp />
+                          <IoStarSharp />
+                        </p>
+                      </div>
+
+                      <p className="text-base sm:text-lg">
+                        <span className="text-opacity-65">
+                          Category: {product.category}
+                        </span>
+                        <br />
+                        PKR {product.price}
                       </p>
                     </div>
-
-                    <p className="text-base sm:text-lg">
-                      <span className="text-opacity-65">
-                        Category: {product.category}
-                      </span>
-                      <br />
-                      PKR {product.price}
-                    </p>
-                      </div>
                   </div>
                 </div>
               </Link>

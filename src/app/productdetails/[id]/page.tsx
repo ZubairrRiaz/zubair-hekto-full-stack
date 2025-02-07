@@ -9,7 +9,7 @@ import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useAppDispatch } from "../../store/hooks";
 import { addToCart } from "../../store/features/cart";
-import { client } from "../../../../sanityClient";
+import { client } from "src/sanity/lib/client";
 import { urlFor } from "../../../sanity/lib/image";
 import { toast } from "sonner";
 import { Productinfo } from "src/app/Product/page";
@@ -30,12 +30,12 @@ async function sanityDataProducts() {
     return dataFetch;
   } catch (error) {
     console.error("Error fetching data from Sanity:", error);
-    return null; // or handle the error as needed
+    return []; // Return an empty array instead of null
   }
 }
 
 const ProductDetails = (props: { params: { id: string } }) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // Corrected the useState to include data
   const [quantity, setQuantity] = useState(1);
   const [cartItem, setCartItem] = useState(null);
 
@@ -43,8 +43,9 @@ const ProductDetails = (props: { params: { id: string } }) => {
     const fetchData = async () => {
       const data = await sanityDataProducts();
       setData(data);
-      const productId = Number(props.params.id);
-      const Product = data.filter((i:Productinfo) => i.id == productId);
+      const params = await props.params;
+      const productId = Number(params.id);
+      const Product = data.filter((i: Productinfo) => i.id == productId);
       if (Product.length > 0) {
         setCartItem({
           id: Product[0].id,
@@ -59,7 +60,7 @@ const ProductDetails = (props: { params: { id: string } }) => {
       }
     };
     fetchData();
-  }, [props.params.id]);
+  }, [props.params]);
 
   const dispatch = useAppDispatch();
 
@@ -88,7 +89,7 @@ const ProductDetails = (props: { params: { id: string } }) => {
   const addToCartFun = () => {
     const updatedCartItem = {
       ...cartItem,
-      price: price,
+      Price: price
     };
     setCartItem(updatedCartItem);
     dispatch(addToCart(updatedCartItem));

@@ -8,14 +8,15 @@ import { client } from "../../sanity/lib/client";
 export interface Productinfo {
   id: number;
   name: string;
-  description: string; // Corrected typo
-  category: string; // Corrected typo
+  description: string;
+  category: string;
   discountPercentage: number;
   stockLevel: number;
   price: number;
   imageUrl: string;
   isFeaturedProduct: boolean;
 }
+
 
 async function sanityDataProducts() {
   try {

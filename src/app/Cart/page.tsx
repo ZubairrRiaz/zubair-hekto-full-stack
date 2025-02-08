@@ -35,7 +35,7 @@ const CartPage = () => {
         // Add form submission logic here
       };
     
-      let itemKey = Math.floor(Math.random() * 1000)
+      const itemKey = Math.floor(Math.random() * 1000)
       const createCustomerInSanity = async () => {
         try {
           const customerObject = {

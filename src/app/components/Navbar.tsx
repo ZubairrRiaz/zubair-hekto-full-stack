@@ -65,7 +65,7 @@ const Navbar = () => {
               USD <MdOutlineKeyboardArrowDown />
             </div>
             <div className="flex justify-center items-center">
-              <Link href={"/Login"} className="flex items-center">
+              <Link href={"/sign-in"} className="flex items-center">
                 Login <IoPersonOutline />
               </Link>
             </div>
@@ -120,7 +120,7 @@ const Navbar = () => {
                 <Link href={"/Contact"}>Contact</Link>
               </li>
               <li>
-                <Link href={"/Signup"}>Sign Up</Link>
+                <Link href={"/sign-up"}>Sign Up</Link>
               </li>
               <li>
                 <Link href={"/FAQ"}>FAQ</Link>

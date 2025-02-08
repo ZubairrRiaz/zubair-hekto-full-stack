@@ -16,6 +16,7 @@ export default function Payment() {
   const cart = useAppSelector(state => state.cart)
   
       const [cartItems, setCartItems] = useState(cart);
+      setCartItems(cart)
 
       const totalPrice = cartItems.reduce((acc, item) => acc + (item.price), 0);
 

@@ -13,6 +13,7 @@ import { client } from "src/sanity/lib/client";
 import { urlFor } from "../../../sanity/lib/image";
 import { toast } from "sonner";
 import { Productinfo } from "src/app/Product/page";
+import { useRouter } from "next/router";
 
 async function sanityDataProducts() {
   try {
@@ -34,33 +35,46 @@ async function sanityDataProducts() {
   }
 }
 
-const ProductDetails = (props: { params: { id: string } }) => {
-  const [data, setData] = useState([]); // Corrected the useState to include data
+// interface ProductDetailsProps {
+//   params: {
+//     id: string;
+//   };
+// }
+
+const ProductDetails = () => {
+  const [, setData] = useState([]);
+ 
   const [quantity, setQuantity] = useState(1);
   const [cartItem, setCartItem] = useState(null);
+  const router = useRouter();
+  const { id } = router.query;  // Extracts 'id' from the URL
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await sanityDataProducts();
       setData(data);
-      const params = await props.params;
-      const productId = Number(params.id);
-      const Product = data.filter((i: Productinfo) => i.id == productId);
-      if (Product.length > 0) {
-        setCartItem({
-          id: Product[0].id,
-          name: Product[0].name,
-          price: Product[0].price,
-          category: Product[0].category,
-          image: urlFor(Product[0].imageUrl).url(),
-          stock: Product[0].stockLevel,
-          description: Product[0].description,
-          isAvailable: Product[0].isFeaturedProduct,
-        });
+
+      if (id) {
+        const productId = Number(id);
+        const product = data.find((i: Productinfo) => i.id === productId);
+
+        if (product) {
+          setCartItem({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+            image: urlFor(product.imageUrl).url(),
+            stock: product.stockLevel,
+            description: product.description,
+            isAvailable: product.isFeaturedProduct,
+          });
+        }
       }
     };
+
     fetchData();
-  }, [props.params]);
+  }, [id]);
 
   const dispatch = useAppDispatch();
 
@@ -89,7 +103,7 @@ const ProductDetails = (props: { params: { id: string } }) => {
   const addToCartFun = () => {
     const updatedCartItem = {
       ...cartItem,
-      Price: price
+      Price: price,
     };
     setCartItem(updatedCartItem);
     dispatch(addToCart(updatedCartItem));

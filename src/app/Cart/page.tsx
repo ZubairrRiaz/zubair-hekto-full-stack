@@ -12,6 +12,8 @@ import { client } from 'src/sanity/lib/client';
 
 const CartPage = () => {
 
+
+
     const [formData, setFormData] = useState({
         name: "",
         phoneNumber: "",
@@ -62,6 +64,7 @@ const CartPage = () => {
     
           const respone = await client.create(customerObject);
           console.log("Order and User is created in sanity", respone);
+
 
         //   return respone;
         } catch (error) {
@@ -130,7 +133,7 @@ const CartPage = () => {
                     <div className="mt-6 p-6 bg-[#7E33E0] text-white shadow-inyner space-y-2">
                         <h2 className="text-2xl font-bold text-white mb-4">Order Summary</h2>
                         <p className="text-lg">Total Products: {totalProducts}</p>
-                        <p className="text-lg">Total Price: PKR {totalPrice.toFixed(2)}</p>
+                        <p className="text-lg">Total Price: PKR {totalPrice}</p>
                     </div>
 
                    <Link href={'#form'}>
@@ -223,11 +226,6 @@ const CartPage = () => {
         </form>
       </div>
     }
-
-
-
-
-
 
 
         </div>

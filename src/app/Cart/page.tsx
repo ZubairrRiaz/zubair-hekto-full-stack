@@ -77,11 +77,11 @@ const CartPage = () => {
 
 
     const cart = useAppSelector(state => state.cart)
+    const [showfrom, setShowFrom] = useState(false)
     const dispatch = useAppDispatch()
     
 
     const [cartItems, setCartItems] = useState(cart);
-    const [showfrom, setShowFrom] = useState(false)
 
 
     useEffect(() => {
@@ -95,10 +95,12 @@ const CartPage = () => {
     };
 
     const calculateSummary = () => {
-        const totalProducts = cartItems.length;
-        const totalPrice = cartItems.reduce((acc, item) => acc + (item.price), 0);
-        return { totalProducts, totalPrice };
-    };
+      const totalProducts = cartItems.length;
+      const totalPrice = cartItems.reduce((acc, item) => {
+          return acc + (Number(item.price) || 0);  // Ensure it's being treated as a number
+      }, 0);
+      return { totalProducts, totalPrice };
+  };
 
     const checkProduct = cartItems.find(cart => cart)
     if (!checkProduct) {

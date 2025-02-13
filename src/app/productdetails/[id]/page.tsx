@@ -9,11 +9,13 @@ import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useAppDispatch } from "../../store/hooks";
 import { addToCart } from "../../store/features/cart";
-import { client } from "src/sanity/lib/client";
 import { urlFor } from "../../../sanity/lib/image";
 import { toast } from "sonner";
 import { Productinfo } from "src/app/Product/page";
+import { useParams } from "next/navigation";
+import { client } from "src/sanity/lib/client";
 
+// Sanity query for fetching products
 async function sanityDataProducts() {
   try {
     const dataFetch = await client.fetch(`*[_type == "product"]{
@@ -30,51 +32,51 @@ async function sanityDataProducts() {
     return dataFetch;
   } catch (error) {
     console.error("Error fetching data from Sanity:", error);
-    return []; // Return an empty array instead of null
+    return []; // Return an empty array if there's an error
   }
 }
 
-const ProductDetails = (props: { params: { id: string } }) => {
-  const [data, setData] = useState([]); // Corrected the useState to include data
+const ProductDetails = () => {
+  const params = useParams(); // Get the params object
+  const [data, setData] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [cartItem, setCartItem] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await sanityDataProducts();
-      setData(data);
-      const productId = Number(props.params.id);
-      const Product = data.filter((i: Productinfo) => i.id == productId);
-      if (Product.length > 0) {
-        setCartItem({
-          id: Product[0].id,
-          name: Product[0].name,
-          price: Product[0].price,
-          category: Product[0].category,
-          image: urlFor(Product[0].imageUrl).url(),
-          stock: Product[0].stockLevel,
-          description: Product[0].description,
-          isAvailable: Product[0].isFeaturedProduct,
-        });
+      const allProducts = await sanityDataProducts();
+      setData(allProducts);
+
+      if (params && params.id) { // Check if params and id are defined
+        const productId = Number(params.id);
+        const product = allProducts.find((p: Productinfo) => p.id === productId);
+
+        if (product) {
+          setCartItem({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+            image: urlFor(product.imageUrl).url(),
+            stock: product.stockLevel,
+            description: product.description,
+            isAvailable: product.isFeaturedProduct,
+          });
+        } else {
+          console.error("Product not found:", productId);
+          setCartItem(null); // Clear cartItem if product not found
+        }
+      } else {
+        console.error("Params or id is undefined");
       }
     };
+
     fetchData();
-  }, [props.params.id]);
+  }, [params?.id]);
 
   const dispatch = useAppDispatch();
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const increaseQuantity = () => {
-    if (cartItem && quantity < cartItem.stock) {
-      setQuantity(quantity + 1);
-    }
-  };
-
+  // Show loading message if cartItem is not yet set
   if (!cartItem) {
     return (
       <div className="font-bold text-center text-3xl py-44">
@@ -83,18 +85,32 @@ const ProductDetails = (props: { params: { id: string } }) => {
     );
   }
 
-  const price = cartItem.price * quantity;
 
+  // Function to update the cart and stock (only in browser)
   const addToCartFun = () => {
+    if (cartItem.stock < quantity) {
+      toast.error("Sorry, not enough stock available.");
+      return;
+    }
+
+    // Update the cart item in the state (decrease stock in browser)
     const updatedCartItem = {
       ...cartItem,
-      Price: price,
+      totalPrice: cartItem.price * quantity, // Store total price based on quantity
+      quantity: quantity, // Store the selected quantity as well
     };
-    setCartItem(updatedCartItem);
-    dispatch(addToCart(updatedCartItem));
-    toast(`Added ${quantity} Quantity Of (${cartItem.name}) In Cart.`);
-  };
 
+    // Update the cart item stock locally (decrease in browser)
+    const updatedProduct = {
+      ...cartItem,
+      stock: cartItem.stock - quantity, // Decrease the stock in the browser state
+    };
+
+    setCartItem(updatedProduct); // Update cart item state
+    dispatch(addToCart(updatedCartItem)); // Dispatch to update the Redux store
+    toast.success(`Added ${quantity} of (${cartItem.name}) to Cart. Total: PKR ${updatedCartItem.totalPrice}`);
+  };
+  
   return (
     <div>
       <div className="sm:h-[250px] h-[150px] items-center w-full bg-gray-100 flex sm:justify-start justify-center">
@@ -132,7 +148,7 @@ const ProductDetails = (props: { params: { id: string } }) => {
                 <IoStarSharp className="text-gray-300" />
                 <span className="text-blue-800 font-bold"> (22)</span>
               </p>
-              <p className="text-blue-900 font-bold">PKR {price}</p>
+              <p className="text-blue-900 font-bold">PKR {cartItem.price}</p>
               <p className="font-bold">Color</p>
               <p className="text-gray-500">{cartItem.description}</p>
               <p className="text-blue-900 font-bold">
@@ -152,29 +168,12 @@ const ProductDetails = (props: { params: { id: string } }) => {
                 </p>
               ) : null}
 
-              {cartItem.isAvailable ? (
+              {cartItem.isAvailable || cartItem.stockLevel == 0 ?  (
                 <>
-                  <div className="flex items-center justify-center gap-3">
-                    <button
-                      className="text-blue-900 font-bold border border-blue-200 rounded-md w-[50px] text-2xl"
-                      onClick={decreaseQuantity}
-                    >
-                      -
-                    </button>
-                    <span className="text-lg w-[27px] text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      className="text-blue-900 font-bold border border-blue-200 rounded-md w-[50px] text-2xl"
-                      onClick={increaseQuantity}
-                    >
-                      +
-                    </button>
-                  </div>
                   <div className="flex justify-center">
                     <button
                       onClick={addToCartFun}
-                      className="bg-blue-600  text-white font-bold py-2 px-4 rounded-lg flex items-center gap-3"
+                      className="bg-blue-600 active:bg-blue-500  text-white font-bold py-2 px-4 rounded-lg flex items-center gap-3"
                     >
                       Add To Cart <FaShoppingCart className="text-white" />
                     </button>
@@ -190,56 +189,73 @@ const ProductDetails = (props: { params: { id: string } }) => {
         )}
       </div>
 
-      <div className="bg-gray-100 h-auto w-full my-20 flex justify-center items-center p-4 sm:py-28">
-        <div className="space-y-7">
-          <div className="flex gap-5 text-xl text-blue-900 font-bold flex-wrap justify-center">
-            <h2 className="underline">Description</h2>
-            <h2>Additional Info</h2>
-            <h2>Reviews</h2>
-            <h2>Videos</h2>
-          </div>
+      <div className="bg-gray-100 sm:px-12 h-auto w-full my-20 flex justify-center items-center p-4 sm:py-28">
+  <div className="space-y-7">
+    <div className="flex gap-5 text-xl text-blue-900 font-bold flex-wrap justify-center">
+      <h2 className="underline">Description</h2>
+      <h2>Additional Info</h2>
+      <h2>Reviews</h2>
+      <h2>Videos</h2>
+    </div>
 
-          <div className="space-y-2">
-            <h2 className="text-xl text-blue-900 font-bold">Varius tempor</h2>
-            <p className="text-gray-500">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-            <p className="text-gray-500">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-            <p className="text-gray-500">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-          </div>
+    <div className="space-y-2">
+      <h2 className="text-xl text-blue-900 font-bold">Comfortable and Stylish Chairs</h2>
+      <p className="text-gray-500">
+        Our collection of chairs is designed for both comfort and style. Whether you're looking for a modern accent chair or a plush recliner, we have something to suit every taste and need. Crafted with high-quality materials, our chairs are perfect for any living room, office, or outdoor space.
+      </p>
+      <p className="text-gray-500">
+        From sleek, minimalist designs to cozy, upholstered options, our chairs are built to provide maximum comfort without compromising on aesthetics. Whether you're hosting a gathering or enjoying a quiet moment, our chairs offer the perfect balance of support and style.
+      </p>
+      <p className="text-gray-500">
+        Our chairs feature durable fabrics, sturdy frames, and ergonomic designs, ensuring they stand the test of time while providing an exceptional seating experience. Choose from a wide range of colors and materials to match your home’s décor.
+      </p>
+    </div>
 
-          <div className="space-y-2">
-            <h2 className="text-xl text-blue-900 font-bold">More details</h2>
-            <p className="flex items-center gap-1 text-gray-500">
-              <FaArrowRightLong className="text-black" />
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-            <p className="flex items-center gap-1 text-gray-500">
-              <FaArrowRightLong className="text-black" />
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-            <p className="flex items-center gap-1 text-gray-500">
-              <FaArrowRightLong className="text-black" />
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-            <p className="flex items-center gap-1 text-gray-500">
-              <FaArrowRightLong className="text-black" />
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia
-              incidunt cum, vero dolores dolore hic aliquid, amet culpa.
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-2">
+      <h2 className="text-xl text-blue-900 font-bold">Sofa Sets for Every Style</h2>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FaArrowRightLong className="text-black" />
+        Discover a variety of sofa sets that cater to different preferences, from compact loveseats to spacious sectional sofas, perfect for any room size.
+      </p>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FaArrowRightLong className="text-black" />
+        Our sofas are designed to offer both luxury and durability, featuring high-density foam cushions, reinforced frames, and soft yet durable upholstery materials.
+      </p>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FaArrowRightLong className="text-black" />
+        Choose from a variety of styles, such as contemporary, classic, and mid-century modern, and add a touch of sophistication to your living space.
+      </p>
+      <p className="flex items-center gap-1 text-gray-500">
+        <FaArrowRightLong className="text-black" />
+        With customizable options like reclining seats, adjustable headrests, and chaise lounges, our sofa sets offer versatility and comfort for all your relaxation needs.
+      </p>
+    </div>
+
+    <div className="space-y-2">
+      <h2 className="text-xl text-blue-900 font-bold">Customer Reviews</h2>
+      <p className="text-gray-500">
+        "Absolutely in love with my new sofa! It's both beautiful and comfortable. The quality is outstanding, and it fits perfectly in my living room. Highly recommend!"
+      </p>
+      <p className="text-gray-500">
+        "The chair I bought exceeded my expectations. The craftsmanship is top-notch, and it’s so comfortable. I’ll be purchasing more pieces from this collection."
+      </p>
+      <p className="text-gray-500">
+        "I ordered a sectional sofa, and it arrived in perfect condition. The customer service was excellent, and they helped me with every step of the way. Definitely a great purchase!"
+      </p>
+    </div>
+
+    <div className="space-y-2">
+      <h2 className="text-xl text-blue-900 font-bold">Watch Our Product Videos</h2>
+      <p className="text-gray-500">
+        Check out our product videos to see how our chairs and sofas fit into various home setups, and learn more about the design features, materials, and assembly process. Watch customer unboxing and reviews to get a better idea of what you can expect from our furniture.
+      </p>
+      <p className="text-gray-500">
+        Our video tutorials also provide helpful tips on maintenance, cleaning, and assembling our furniture, ensuring your new purchase lasts for years to come.
+      </p>
+    </div>
+  </div>
+</div>
+
 
       <h1 className="font-bold text-3xl sm:ml-36 py-10 text-blue-800 text-center sm:text-left">
         Related Products
@@ -323,3 +339,13 @@ const ProductDetails = (props: { params: { id: string } }) => {
 };
 
 export default ProductDetails;
+
+
+
+
+
+
+
+
+
+

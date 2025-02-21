@@ -17,7 +17,7 @@ export default function Payment() {
   
      
 
-      const totalPrice = cart.reduce((acc, item) => acc + (item.price), 0);
+  const totalPrice = cart.reduce((acc, item) => acc + Number(item.price), 0);
 
     
 

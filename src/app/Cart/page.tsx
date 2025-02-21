@@ -140,7 +140,7 @@ const CartPage = () => {
 
                    <Link href={'#form'}>
                     <button onClick={() =>setShowFrom(true)} className="w-full mt-6 bg-[#7E33E0] text-white py-3 rounded-lg font-semibold hover:bg-[#88b0c0] transition duration-300">
-                      Proceed to Checkout
+                      Proceed to Buy
                     </button>
                     </Link>
                 </div>
